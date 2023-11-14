@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Response;
 use App\Models\ModelBook; // importando a classe 
-use App\Models\User; // importando a classe
+use App\Models\User; 
+use Illuminate\Support\Facades\View;// importando a classe
 
 
 class BookController extends Controller
@@ -37,7 +38,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+       $user = $this->objUser->all();
+        return view('create',compact('user')); 
     }
 
     /**
@@ -48,7 +50,15 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        
+        $cad=$this->objBook->create([
+            'title'=>$request->title,
+            'pages'=> $request->pages,
+            'price'=> $request->price,
+            'id_user'=> $request->id_user,
+        ]);
+        if($cad){return redirect('/');}
     }
 
     /**
