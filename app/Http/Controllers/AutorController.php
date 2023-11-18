@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BookRequest;
-use App\Http\Requests\Response;
+use Illuminate\Http\Request;
+
 use App\Models\ModelBook; // importando a classe 
 use App\Models\User; 
 use Illuminate\Support\Facades\View;// importando a classe
 
-
-
-class BookController extends Controller
+class AutorController extends Controller
 {
     private $user;
     private $book;
@@ -26,12 +24,7 @@ class BookController extends Controller
      */
     public function index()
     {
-       // dd($this->objUser->find(2)->relBooks);       // codigo permite visualiizar os valores vindo da tabela sem nescessidade da implementação da viw
-      
-
-       $book = $this->objBook->paginate(5);
-       return view('index', compact('book'));
-      
+       
     }
 
     /**
@@ -39,12 +32,11 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createBook()
+    public function createAutor()
     {
        $user = $this->objUser->all();
-        return view('createBook',compact('user')); 
+        return view('createAutor',compact('user')); 
     }
-    
 
     /**
      * Store a newly created resource in storage.
@@ -52,17 +44,14 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BookRequest $request)
+    public function store(Request $request)
     {
-        
-        
-        $cadBook=$this->objBook->create([
-            'title'=>$request->title,
-            'pages'=> $request->pages,
-            'price'=> $request->price,
-            'id_user'=> $request->id_user,
+        $cadAutor=$this->objUser->create([
+            'name'=>$request->name,
+            'email'=> $request->email,
+            'password'=> $request->password,
         ]);
-        if($cadBook){return redirect('/');}
+        if($cadAutor){return redirect('/');}
     }
 
     /**
@@ -72,10 +61,10 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {   
-        // echo $id;
-        $book = $this->objBook->find($id);
-        return view('show',compact('book')); // vai chamar a view show e exibir o conteudo da model book que  esta relacionado ao id recebido por parametro
+    {
+       // echo $id;
+       $book = $this->objBook->find($id);
+       return view('show',compact('book'));
     }
 
     /**
@@ -86,9 +75,7 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book=$this->objBook->find($id);
-        $user= $this->objUser->all();
-        return view('createBook',compact('book','user'));// essas duas variaveis book e user, são as variaveis criadas la no inicio da classe bookcontroller  private $user;private $book
+        //
     }
 
     /**
@@ -98,15 +85,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BookRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $this->objBook->where(['id'=>$id])->update([
-            'title'=>$request->title,
-            'pages'=>$request->pages,
-            'price'=>$request->price,
-            'id_user'=>$request->id_user
-        ]);
-        return redirect('/');
+        //
     }
 
     /**
@@ -117,7 +98,6 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $del = $this->objBook->destroy($id);
-        return($del)?"sim":"não";
+        //
     }
 }
